@@ -3,7 +3,7 @@
 int procuraTraco(char comando[])
 {
 	int i = 0;
-	while(comando[i] != '-' || comando[i] != '\0')
+	while(comando[i] != '-' && comando[i] != '\0')
 	{
 		i++;
 	}
@@ -16,29 +16,45 @@ char verificaCom(int indice, char comando[])
 	return letra;
 }
 
-char passaCaminho(int indice, char comando[])
+void passaCaminho(int indice, char comando[], char caminho[], int* espaco, int espaco2)
 {
-	char caminho[256];
-	int i = 3;
-	do
+	int i = 0;
+	while (comando[indice + i] != '\0' && comando[indice + i] != '\n')
 	{
 		caminho[i] = comando[indice+i];
+		if(caminho[i] == ' ' && *espaco == -1)
+		{
+			*espaco = i;
+		}
 		i++;
-	}while(comando[indice+i] != '\0');
 
-	return caminho[256];
+		if(caminho[i] == ' ' && *espaco != -1)
+		{
+			*espaco2 = i;
+		}
+		i++;
+		if(caminho[i] == ' ' && *espaco2 != -1)
+		{
+			fprintf(stderr, "Error: No file informed.\n");
+		}
+	}
+
+	caminho[i] = '\0';
 }
 
 int main()
 {
 
 	char comando[512];
+	char caminho[256];
+	int espaco = -1;
+	int* espaco2 = espaco + 1;
 	
 	printf(">vwc: ");
 	fgets(comando, sizeof(comando), stdin);
 	printf("\n");
 	
-	int indice = procuraTraco(comando[]);
+	int indice = procuraTraco(comando);
 	
 	if(indice == sizeof(comando)/8)
 	{
@@ -46,7 +62,8 @@ int main()
 		return 0;
 	}
 
-	char caminho[256] = passaCaminho(indice, comando);
+	passaCaminho(indice, comando, caminho, espaco, espaco2);
+
 	
 
 	opcao = verificaCom(indice, comando);
