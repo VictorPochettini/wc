@@ -43,16 +43,30 @@ void passaCaminho(int indice, char comando[], char caminho[], int* espaco)
 
 void montaCaminho(char caminho[], int espaco, char caminho1[], char caminho2[])
 {
+    memset(caminho1, 0, 256);
+    memset(caminho2, 0, 256);
+
     if (espaco != -1)
     {
-        caminho1[espaco] = '\0';
-        for (int i = espaco + 1; caminho[i] != '\0'; i++)
+        for (int i = 0; i < espaco; i++)
         {
-            caminho2[i - espaco - 1] = caminho[i];
+            caminho1[i] = caminho[i];
         }
-        caminho2[espaco] = '\0';
+        caminho1[espaco] = '\0';
+
+        int j = 0;
+        for (int i = espaco + 1; caminho[i] != '\0'; i++, j++)
+        {
+            caminho2[j] = caminho[i];
+        }
+        caminho2[j] = '\0';
+    }
+    else
+    {
+        strcpy(caminho1, caminho);
     }
 }
+
 
 int l(FILE* file)
 {
@@ -94,6 +108,9 @@ int main()
     
         passaCaminho(indice, comando, caminho, &espaco);
         montaCaminho(caminho, espaco, caminho1, caminho2); 
+
+	file = fopen(caminho1, "r");
+	file2 = fopen(caminho2, "r");
     
         opcao = verificaCom(indice, comando);
     
