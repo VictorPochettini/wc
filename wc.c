@@ -102,6 +102,19 @@ int w(FILE *file)
 	return acc;
 }
 
+long m(FILE* file, char caminho[])
+{
+	fclose(file);
+	file = fopen(caminho, "rb");
+	if(file == NULL)
+	{
+		fprintf(stderr, "Error: file %s does not exist", caminho);
+	}
+	fseek(file, 0, SEEK_END);
+	long bytes = ftell(file);
+	return bytes;
+}
+
 int main()
 {
     while (1)
@@ -115,7 +128,8 @@ int main()
 	int pal2 = 1;
 	int car = 1;
 	int car2 = 1;
-	int linhas2 = 1;
+	int bytes = 1;
+	int bytes2 = 1;
         FILE* file;
         FILE* file2;
         char caminho1[256];
@@ -168,6 +182,7 @@ int main()
 				linhas2 = c(file2);
 				printf("Linhas: %d\n", car2);
 			}
+			break;
 		case 'l':
                 	linhas = l(file);
                 	printf("Linhas: %d\n", linhas);
@@ -176,6 +191,7 @@ int main()
 				linhas2 = l(file2);
 				printf("Linhas: %d\n", linhas2);
 			}
+			break;
 		case 'w':
 			pal = w(file);
                 	printf("Palavras: %d\n", pal);
@@ -184,14 +200,33 @@ int main()
 				pal2 = w(file2);
 				printf("Palavras: %d\n", pal2);
 			}
+			break;
                 	
 		case 'm':
-
+			bytes = m(file, caminho1);
+			printf("Bytes: %ld\n", bytes);
+			if(tipo == 0)
+			{
+				bytes2 = m(file2, caminho2);
+				printf("Bytes: %ld\n", bytes2);
+			}
+			break;
 		case 27:
 			break;
+
+		case default:
+			fprintf(stderr, "Error: Invalid command\n");
                 	
 
         }
+	if(file != NULL)
+	{
+		fclose(file);
+	}
+	if(file2 != NULL)
+	{
+		fclose(file2);
+	}
     }
     return 0;
 }
