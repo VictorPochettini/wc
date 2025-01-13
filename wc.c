@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #define MAX 10000000
 
 int procuraTraco(char comando[])
@@ -123,86 +125,75 @@ int main()
         char caminho[256];
         int espaco = -1;
         int linhas = 1;
-	int linhas2 = 1;
-	int pal = 1;
-	int pal2 = 1;
-	int car = 1;
-	int car2 = 1;
-	int bytes = 1;
-	int bytes2 = 1;
+		int linhas2 = 1;
+		int pal = 1;
+		int pal2 = 1;
+		int car = 1;
+		int car2 = 1;
+		int bytes = 1;
+		int bytes2 = 1;
         FILE* file;
         FILE* file2;
         char caminho1[256];
         char caminho2[256];
         char opcao;
-	int tipo = 0;    
+		int tipo = 0;    
 
         printf(">vwc: ");
         fgets(comando, sizeof(comando), stdin);
         printf("\n");
 
-	for(int i = 0; i<sizeof(comando); i++)
-	{
-		if(comando[i] == 27)
-		break;
-	}
+		for(int i = 0; i<sizeof(comando); i++)
+		{
+			if(comando[i] == 27)
+			break;
+		}
     
         int indice = procuraTraco(comando);
-    
-        if (indice == sizeof(comando) / 8)
-        {
-		//Colocar código que ele executa todas as operações
-        }
 
         passaCaminho(indice, comando, caminho, &espaco);
         montaCaminho(caminho, espaco, caminho1, caminho2); 
 
-	file = fopen(caminho1, "r");
-	file2 = fopen(caminho2, "r");
+		file = fopen(caminho1, "r");
+		file2 = fopen(caminho2, "r");
 
-	if(file == NULL)
-	{
-		fprintf(stderr, "Error: file %s does not exist", caminho1);
-	}
+		if(file == NULL)
+		{
+			fprintf(stderr, "Error: file %s does not exist", caminho1);
+		}
 
-	if(file2 == NULL)
-	{
-		tipo = 1;
-	}
-    
-        opcao = verificaCom(indice, comando);
-    
-        switch (opcao)
+		if(file2 == NULL)
+		{
+			tipo = 1;
+		}
+
+		if (indice == sizeof(comando) / 8)
         {
-		case 'c':
-			linhas = c(file);
-                	printf("Caracteres: %d\n", car);
+			//Caracteres
+			car = c(file);
+    		printf("Caracteres: %d\n", car);
+				if(tipo == 0)
+				{
+					linhas2 = c(file2);
+					printf("Linhas: %d\n", car2);
+				}
+			//Linhas	
+			linhas = l(file);
+            printf("Linhas: %d\n", linhas);
 			if(tipo == 0)
-			{
-				linhas2 = c(file2);
-				printf("Linhas: %d\n", car2);
-			}
-			break;
-		case 'l':
-                	linhas = l(file);
-                	printf("Linhas: %d\n", linhas);
-			if(tipo == 0)
-			{
-				linhas2 = l(file2);
-				printf("Linhas: %d\n", linhas2);
-			}
-			break;
-		case 'w':
+				{
+					linhas2 = l(file2);
+					printf("Linhas: %d\n", linhas2);
+				}
+			//Palavras
 			pal = w(file);
-                	printf("Palavras: %d\n", pal);
+            printf("Palavras: %d\n", pal);
 			if(tipo == 0)
 			{
 				pal2 = w(file2);
 				printf("Palavras: %d\n", pal2);
 			}
-			break;
-                	
-		case 'm':
+			//Bytes
 			bytes = m(file, caminho1);
 			printf("Bytes: %ld\n", bytes);
 			if(tipo == 0)
@@ -211,22 +202,66 @@ int main()
 				printf("Bytes: %ld\n", bytes2);
 			}
 			break;
-		case 27:
-			break;
+        }
+    
+        opcao = verificaCom(indice, comando);
+    
+        switch (opcao)
+        {
+			case 'c':
+				car = c(file);
+                printf("Caracteres: %d\n", car);
+				if(tipo == 0)
+				{
+					car2 = c(file2);
+					printf("Caracteres: %d\n", car2);
+				}
+				break;
+			case 'l':
+            	linhas = l(file);
+            	printf("Linhas: %d\n", linhas);
+				if(tipo == 0)
+					{
+						linhas2 = l(file2);
+						printf("Linhas: %d\n", linhas2);
+					}
+				break;
+			case 'w':
+				pal = w(file);
+            	printf("Palavras: %d\n", pal);
+				if(tipo == 0)
+				{
+					pal2 = w(file2);
+					printf("Palavras: %d\n", pal2);
+				}
+				break;
+                	
+			case 'm':
+				bytes = m(file, caminho1);
+				printf("Bytes: %ld\n", bytes);
+				if(tipo == 0)
+				{
+					bytes2 = m(file2, caminho2);
+					printf("Bytes: %ld\n", bytes2);
+				}
+				break;
+			case 27:
+				break;
 
-		case default:
-			fprintf(stderr, "Error: Invalid command\n");
+			default:
+				fprintf(stderr, "Error: Invalid command\n");
+				break;
                 	
 
         }
-	if(file != NULL)
-	{
-		fclose(file);
-	}
-	if(file2 != NULL)
-	{
-		fclose(file2);
-	}
+		if(file != NULL)
+		{
+			fclose(file);
+		}
+		if(file2 != NULL)
+		{
+			fclose(file2);
+		}
     }
     return 0;
 }
