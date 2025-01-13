@@ -21,7 +21,7 @@ char verificaCom(int indice, char comando[])
 
 void passaCaminho(int indice, char comando[], char caminho[], int* espaco)
 {
-    int i = 2;
+    int i = 3;
     while (comando[indice + i] != '\0' && comando[indice + i] != '\n')
     {
         caminho[i] = comando[indice + i];
@@ -149,7 +149,7 @@ int main()
 			break;
 		}
     
-        int indice = procuraTraco(comando);
+        int indice = 0;
 
         passaCaminho(indice, comando, caminho, &espaco);
         montaCaminho(caminho, espaco, caminho1, caminho2); 
