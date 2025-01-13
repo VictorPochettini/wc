@@ -108,7 +108,7 @@ long m(FILE* file, char caminho[])
 {
 	fclose(file);
 	file = fopen(caminho, "rb");
-	if(file == NULL)
+	if(!file)
 	{
 		fprintf(stderr, "Error: file %s does not exist", caminho);
 	}
@@ -124,14 +124,6 @@ int main()
 		char comando[512];
         	char caminho[256];
         	int espaco = -1;
-        	int linhas = 1;
-		int linhas2 = 1;
-		int pal = 1;
-		int pal2 = 1;
-		int car = 1;
-		int car2 = 1;
-		int bytes = 1;
-		int bytes2 = 1;
         	FILE* file;
         	FILE* file2;
         	char caminho1[256];
@@ -157,13 +149,13 @@ int main()
 		file = fopen(caminho1, "r");
 		file2 = fopen(caminho2, "r");
 
-		if(file == NULL)
+		if(!file)
 		{
 			fprintf(stderr, "Error: file %s does not exist", caminho1);
 			break;
 		}
 
-		if(file2 == NULL)
+		if(!file2)
 		{
 			tipo = 1;
 		}
@@ -171,36 +163,28 @@ int main()
 		if (indice == sizeof(comando) / 8)
 		{
 			//Caracteres
-			car = c(file);
-    			printf("Caracteres: %d\n", car);
+			printf("Caracteres: %d\n", c(file));
 			if(tipo == 0)
 			{
-				linhas2 = c(file2);
-				printf("Linhas: %d\n", car2);
+				printf("Caracteres: %d\n", c(file2));
 			}
 			//Linhas	
-			linhas = l(file);
-			printf("Linhas: %d\n", linhas);
+            		printf("Linhas: %d\n", l(file));
 			if(tipo == 0)
-			{
-				linhas2 = l(file2);
-				printf("Linhas: %d\n", linhas2);
-			}
+				{
+					printf("Linhas: %d\n", l(file2));
+				}
 			//Palavras
-			pal = w(file);
-			printf("Palavras: %d\n", pal);
+			printf("Palavras: %d\n", w(file));
 			if(tipo == 0)
 			{
-				pal2 = w(file2);
-				printf("Palavras: %d\n", pal2);
+				printf("Palavras: %d\n", w(file2));
 			}
 			//Bytes
-			bytes = m(file, caminho1);
-			printf("Bytes: %ld\n", bytes);
+			printf("Bytes: %ld\n", m(file, caminho1));
 			if(tipo == 0)
 			{
-				bytes2 = m(file2, caminho2);
-				printf("Bytes: %ld\n", bytes2);
+				printf("Bytes: %ld\n", m(file2, caminho2));
 			}
 			break;
         	}
@@ -210,39 +194,31 @@ int main()
         	switch (opcao)
         	{
 			case 'c':
-				car = c(file);
-				printf("Caracteres: %d\n", car);
+				printf("Caracteres: %d\n", c(file));
 				if(tipo == 0)
 				{
-					car2 = c(file2);
-					printf("Caracteres: %d\n", car2);
+					printf("Caracteres: %d\n", c(file2));
 				}
 				break;
 			case 'l':
-            			linhas = l(file);
-            			printf("Linhas: %d\n", linhas);
+            			printf("Linhas: %d\n", l(file));
 				if(tipo == 0)
 					{
-						linhas2 = l(file2);
-						printf("Linhas: %d\n", linhas2);
+						printf("Linhas: %d\n", l(file2));
 					}
 				break;
 			case 'w':
-				pal = w(file);
-            			printf("Palavras: %d\n", pal);
+            			printf("Palavras: %d\n", w(file));
 				if(tipo == 0)
 				{
-					pal2 = w(file2);
-					printf("Palavras: %d\n", pal2);
+					printf("Palavras: %d\n", w(file2));
 				}
 				break;
 			case 'm':
-				bytes = m(file, caminho1);
-				printf("Bytes: %ld\n", bytes);
+				printf("Bytes: %ld\n", m(file, caminho1));
 				if(tipo == 0)
 				{
-					bytes2 = m(file2, caminho2);
-					printf("Bytes: %ld\n", bytes2);
+					printf("Bytes: %ld\n", m(file2, caminho2));
 				}
 				break;
 			case 27:
@@ -255,7 +231,7 @@ int main()
 
         	}
 		fclose(file);
-		fclose(file2);
+		if(file2) fclose(file2);
 	
 	}
 }
