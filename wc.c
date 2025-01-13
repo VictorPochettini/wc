@@ -119,12 +119,12 @@ long m(FILE* file, char caminho[])
 
 int main()
 {
-    while (1)
-    {
-        char comando[512];
-        char caminho[256];
-        int espaco = -1;
-        int linhas = 1;
+	while (1)
+	{
+		char comando[512];
+        	char caminho[256];
+        	int espaco = -1;
+        	int linhas = 1;
 		int linhas2 = 1;
 		int pal = 1;
 		int pal2 = 1;
@@ -132,27 +132,27 @@ int main()
 		int car2 = 1;
 		int bytes = 1;
 		int bytes2 = 1;
-        FILE* file;
-        FILE* file2;
-        char caminho1[256];
-        char caminho2[256];
-        char opcao;
+        	FILE* file;
+        	FILE* file2;
+        	char caminho1[256];
+        	char caminho2[256];
+        	char opcao;
 		int tipo = 0;    
 
-        printf(">vwc: ");
-        fgets(comando, sizeof(comando), stdin);
-        printf("\n");
+        	printf(">vwc: ");
+        	fgets(comando, sizeof(comando), stdin);
+        	printf("\n");
 
 		for(int i = 0; i<sizeof(comando); i++)
 		{
 			if(comando[i] == 27)
-			break;
+			goto end;
 		}
     
-        int indice = 0;
+        	int indice = 0;
 
-        passaCaminho(indice, comando, caminho, &espaco);
-        montaCaminho(caminho, espaco, caminho1, caminho2); 
+        	passaCaminho(indice, comando, caminho, &espaco);
+        	montaCaminho(caminho, espaco, caminho1, caminho2); 
 
 		file = fopen(caminho1, "r");
 		file2 = fopen(caminho2, "r");
@@ -160,6 +160,7 @@ int main()
 		if(file == NULL)
 		{
 			fprintf(stderr, "Error: file %s does not exist", caminho1);
+			break;
 		}
 
 		if(file2 == NULL)
@@ -168,26 +169,26 @@ int main()
 		}
 
 		if (indice == sizeof(comando) / 8)
-        {
+		{
 			//Caracteres
 			car = c(file);
-    		printf("Caracteres: %d\n", car);
-				if(tipo == 0)
-				{
-					linhas2 = c(file2);
-					printf("Linhas: %d\n", car2);
-				}
+    			printf("Caracteres: %d\n", car);
+			if(tipo == 0)
+			{
+				linhas2 = c(file2);
+				printf("Linhas: %d\n", car2);
+			}
 			//Linhas	
 			linhas = l(file);
-            printf("Linhas: %d\n", linhas);
+			printf("Linhas: %d\n", linhas);
 			if(tipo == 0)
-				{
-					linhas2 = l(file2);
-					printf("Linhas: %d\n", linhas2);
-				}
+			{
+				linhas2 = l(file2);
+				printf("Linhas: %d\n", linhas2);
+			}
 			//Palavras
 			pal = w(file);
-            printf("Palavras: %d\n", pal);
+			printf("Palavras: %d\n", pal);
 			if(tipo == 0)
 			{
 				pal2 = w(file2);
@@ -202,15 +203,15 @@ int main()
 				printf("Bytes: %ld\n", bytes2);
 			}
 			break;
-        }
+        	}
     
-        opcao = verificaCom(indice, comando);
+        	opcao = verificaCom(indice, comando);
     
-        switch (opcao)
-        {
+        	switch (opcao)
+        	{
 			case 'c':
 				car = c(file);
-                printf("Caracteres: %d\n", car);
+				printf("Caracteres: %d\n", car);
 				if(tipo == 0)
 				{
 					car2 = c(file2);
@@ -218,8 +219,8 @@ int main()
 				}
 				break;
 			case 'l':
-            	linhas = l(file);
-            	printf("Linhas: %d\n", linhas);
+            			linhas = l(file);
+            			printf("Linhas: %d\n", linhas);
 				if(tipo == 0)
 					{
 						linhas2 = l(file2);
@@ -228,14 +229,13 @@ int main()
 				break;
 			case 'w':
 				pal = w(file);
-            	printf("Palavras: %d\n", pal);
+            			printf("Palavras: %d\n", pal);
 				if(tipo == 0)
 				{
 					pal2 = w(file2);
 					printf("Palavras: %d\n", pal2);
 				}
 				break;
-                	
 			case 'm':
 				bytes = m(file, caminho1);
 				printf("Bytes: %ld\n", bytes);
@@ -253,15 +253,9 @@ int main()
 				break;
                 	
 
-        }
-		if(file != NULL)
-		{
-			fclose(file);
-		}
-		if(file2 != NULL)
-		{
-			fclose(file2);
-		}
-    }
-    return 0;
+        	}
+		fclose(file);
+		fclose(file2);
+	
+	}
 }
