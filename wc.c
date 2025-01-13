@@ -117,6 +117,16 @@ long m(FILE* file, char caminho[])
 	return bytes;
 }
 
+void todos(file, caminho)
+{
+	printf("Caracteres: %d\n", c(file));
+	printf("Linhas: %d\n", l(file));
+	printf("Palavras: %d\n", w(file));
+	printf("Bytes: %ld\n", m(file, caminho1));
+	fclose(file);
+	
+}
+
 int main()
 {
 	while (1)
@@ -162,30 +172,8 @@ int main()
 
 		if (indice == sizeof(comando) / 8)
 		{
-			//Caracteres
-			printf("Caracteres: %d\n", c(file));
-			if(tipo == 0)
-			{
-				printf("Caracteres: %d\n", c(file2));
-			}
-			//Linhas	
-            		printf("Linhas: %d\n", l(file));
-			if(tipo == 0)
-				{
-					printf("Linhas: %d\n", l(file2));
-				}
-			//Palavras
-			printf("Palavras: %d\n", w(file));
-			if(tipo == 0)
-			{
-				printf("Palavras: %d\n", w(file2));
-			}
-			//Bytes
-			printf("Bytes: %ld\n", m(file, caminho1));
-			if(tipo == 0)
-			{
-				printf("Bytes: %ld\n", m(file2, caminho2));
-			}
+			todos(file, caminho1);
+			if(tipo == 0) todos(file2, caminho2);
 			break;
         	}
     
